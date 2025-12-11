@@ -1,6 +1,7 @@
+import pygame
+
 from random import randint
 
-import pygame
 
 # Константы для размеров поля и сетки:
 SCREEN_WIDTH, SCREEN_HEIGHT = 640, 480
@@ -27,7 +28,7 @@ APPLE_COLOR = (255, 0, 0)
 SNAKE_COLOR = (0, 255, 0)
 
 # Скорость движения змейки (по сути fps игры):
-SPEED = 20
+SPEED = 15
 
 # Настройка игрового окна:
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
@@ -111,8 +112,9 @@ class Snake(GameObject):
 
         dx, dy = self.direction
 
+        # % - это переход от одной границы экрана к другой
         new_head = (
-            (head[0] + dx * GRID_SIZE) % SCREEN_WIDTH,  # % - это переход от одной границы экрана к другой
+            (head[0] + dx * GRID_SIZE) % SCREEN_WIDTH,
             (head[1] + dy * GRID_SIZE) % SCREEN_HEIGHT
         )
 
@@ -145,7 +147,8 @@ class Snake(GameObject):
         return self.positions[0]
 
     def reset(self):
-        """возвращает змейку в исходное состояние + заливает чёрным старые объекты"""
+        """возвращает змейку в исходное состояние"""
+        """+ заливает чёрным старые объекты"""
         self.length = 1
         self.positions = [(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)]
         self.direction = RIGHT
@@ -191,7 +194,8 @@ def main():
 
         if snake.get_head_position() == apple.position:  # Съели яблоко
             snake.length += 1  # Удлиняем змею
-            while apple.position in snake.positions:  # проверяем не в змее ли заспавнилось яблоко
+            # проверяем не в змее ли заспавнилось яблоко
+            while apple.position in snake.positions:
                 apple.randomize_position()
 
         pygame.display.update()  # обновляет экран
